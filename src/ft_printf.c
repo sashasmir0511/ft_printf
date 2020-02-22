@@ -28,7 +28,7 @@ static void			constructor(t_flags *fl)
 	fl->filler = ' ';
 }
 
-static void			for_norm1(int *total, t_flags *fl, va_list *ap)
+static int			for_norm1(int *total, t_flags *fl, va_list *ap)
 {
 	char *str;
 
@@ -44,6 +44,7 @@ static void			for_norm1(int *total, t_flags *fl, va_list *ap)
 			*total += putstr_for_null_char(str);
 		ft_strdel(&str);
 	}
+	return (fl->step + 1);
 }
 
 static const char	*for_norm3(const char *format, int *fl_color)
@@ -72,14 +73,14 @@ int *fl_color)
 			continue;
 		}
 		constructor(fl);
-		format++;
-		if (analysis(format, fl))
+		if (analysis(++format, fl))
 		{
+			if (format[fl->step] == '$')
+				return (total);
 			format += fl->step;
 			continue;
 		}
-		for_norm1(&total, fl, ap);
-		format += fl->step + 1;
+		format += for_norm1(&total, fl, ap);
 	}
 	if (*fl_color)
 		color_end("normal");

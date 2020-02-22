@@ -96,6 +96,8 @@ int			analysis(const char *s, t_flags *fl)
 	}
 	if (analysis_modifier_flag(s, fl))
 		return (1);
+	if (s[fl->step] == '$')
+		return (1);
 	if (!(is_type_flag(&s[fl->step])))
 		return (1);
 	fl->type = s[fl->step];
